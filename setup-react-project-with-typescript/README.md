@@ -109,6 +109,8 @@ Add the lint command to the package.json:
     }
 ```
 
+Now you can run: ```yarn lint``` to lint the files.
+
 Configure Prettier
 
 ```sh
@@ -121,7 +123,7 @@ Test Prettier
 npx  prettier  --write  src/App.tsx // --write to save file
 ```
 
-Configure the .eslintrc.json :
+Configure the lint and prettier to work together at the .eslintrc.json :
 
 ```
     "extends": [
@@ -139,7 +141,7 @@ Configure the .eslintrc.json :
      }
 ```
 
-Add the .prettierrc:
+Add prettier rules to the .prettierrc like :
 
 ```
     {
@@ -155,7 +157,7 @@ Add the .prettierrc:
     "useTabs": false
   }
 ```
-Add the .prettierignore:
+Add prettier ignore rules to the .prettierignore:
 
 ```
     {
@@ -176,7 +178,9 @@ Add the prettier command to the package.json:
     }
 ```
 
-Add the validate command to the package.json:
+Now you can run: ```yarn format``` to format according to the prettier rules and save the files.
+
+Sometime we want to check if the files are already linted and formattered, to do that we will create the validate command to the package.json like:
 
 ```
      "scripts": {
@@ -184,19 +188,24 @@ Add the validate command to the package.json:
         "validate": "yarn lint && yarn prettier --list-different \"**/*.+(js|jsx|json|tsx|css|ts|md|graphql)\"",
     }
 ```
+Now you can run: ```yarn validate``` to lint and list the files that are not formatted.
 
+We can validate the files before commiting to the git repository to prevent bad code by using the Husky.
 Install the Husky to validate before commiting (The project has to be git init first):
 
 ```sh
     yarn add husky --dev
 ```
-Add the precommit command to the package.json:
 
+Add husky config to the to the package.json:
 ```
-     "scripts": {
-      ....
-         "precommit":"yarn validate"
+{
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn validate"
     }
+  }
+}
 ```
 Now when you commit files, the ```yarn validate``` will be run.
 
@@ -229,8 +238,7 @@ Add the lint-staged config to husky:
 ```sh
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged",
-      "pre-push": "yarn test"
+      "pre-commit": "lint-staged"
     }
   }
   ```
