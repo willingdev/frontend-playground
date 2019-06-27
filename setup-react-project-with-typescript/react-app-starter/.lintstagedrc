@@ -1,0 +1,11 @@
+     "linters":{
+        "src/*.+(js|jsx|tsx|ts)":[
+            "prettier --write",
+            "eslint",
+            "git add"
+        ],
+        "src/*.+(graphql|json|css)":[
+            "prettier --write",
+            "git add"
+        ]
+    }
