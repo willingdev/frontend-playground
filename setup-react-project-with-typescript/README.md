@@ -61,7 +61,7 @@ Configure Lint
 ```sh
 npm i -g eslint
 eslint --init
-yarn add @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint-config-react-app lint-staged --dev
+yarn add @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint-config-react-app --dev
 ```
 Configure the .eslintrc.json like:
 
@@ -181,7 +181,7 @@ Add the validate command to the package.json:
 ```
      "scripts": {
       ....
-          "validate": "yarn lint && yarn prettier -- --list-different",
+        "validate": "yarn lint && yarn prettier --list-different \"**/*.+(js|jsx|json|tsx|css|ts|md|graphql)\"",
     }
 ```
 
@@ -198,9 +198,10 @@ Add the precommit command to the package.json:
          "precommit":"yarn validate"
     }
 ```
+Now when you commit files, the ```yarn validate``` will be run.
 
-
-Configure the lint only the changed files:
+Considering linting the whole project is slow, we want to lint files that will be committed.
+Configure to lint files that will be committed:
 
 ```sh
     yarn add lint-staged --dev
@@ -208,8 +209,9 @@ Configure the lint only the changed files:
 
 Create .lintstagedrc file:
 
-```
-        "linters":{
+```sh
+{
+    "linters":{
         "src/*.+(js|jsx|tsx|ts)":[
             "prettier --write",
             "eslint",
@@ -220,4 +222,17 @@ Create .lintstagedrc file:
             "git add"
         ]
     }
+}
 ```
+
+Add the lint-staged config to husky:
+```sh
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "yarn test"
+    }
+  }
+  ```
+
+Now when you commit files, lint-staged  will run according to its config.

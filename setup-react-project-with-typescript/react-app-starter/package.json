@@ -19,7 +19,7 @@
     "eject": "react-scripts eject",
     "lint": "eslint \"**/*.+(js|jsx|tsx|ts|graphql)\"",
     "format": "prettier  --write \"**/*.+(js|jsx|json|tsx|css|ts|md|graphql)\"",
-    "validate": "yarn lint && yarn prettier -- --list-different",
+    "validate": "yarn lint && yarn prettier --list-different \"**/*.+(js|jsx|json|tsx|css|ts|md|graphql)\"",
     "precommit": "yarn validate"
   },
   "eslintConfig": {
@@ -50,7 +50,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn precommit",
+      "pre-commit": "lint-staged",
       "pre-push": "yarn test"
     }
   }
